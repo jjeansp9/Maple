@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bg_base">#F3F3F3</color>
+
+    <color name="font_color_333">#333</color>
+    <color name="font_color_444">#444</color>
+    <color name="font_color_555">#555</color>
+    <color name="font_color_666">#666</color>
+    <color name="font_color_777">#777</color>
+    <color name="font_color_888">#888</color>
+    <color name="font_color_999">#999</color>
+    <color name="font_color_default">#1D1D1D</color>
+
+    <color name="box_color">#FFFFFF</color>
+
+    <color name="btn_color">#3A913E</color>
+    <color name="bg_nogada">#3F4F6C</color>
+</resources>
