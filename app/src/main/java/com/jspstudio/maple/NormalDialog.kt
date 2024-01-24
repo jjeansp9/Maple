@@ -12,7 +12,7 @@ class NormalDialog : DialogFragment() {
 
     private val binding: DialogNormalBinding by lazy { DialogNormalBinding.inflate(layoutInflater) }
 
-    private var okClickListener: ((response: Int) -> Unit)? = null
+    private var okClickListener: ((response: Long) -> Unit)? = null
     private var cancelClickListener: View.OnClickListener? = null
     private var title = ""
     private var price = ""
@@ -38,16 +38,16 @@ class NormalDialog : DialogFragment() {
 
     fun setTitle(str: String) { title = str }
     fun setPrice(str: String) { price = str }
-    fun okClick(listener: ((response: Int) -> Unit)?) {
+    fun okClick(listener: ((response: Long) -> Unit)?) {
         okClickListener = listener
     }
     fun cancelClick(listener: View.OnClickListener) { cancelClickListener = listener }
 
     private fun onClick () {
         binding.tvOk.setOnClickListener{
-            var num = 0
+            var num = 0L
 
-            if (binding.etPrice.text.isNotEmpty()) num = binding.etPrice.text.toString().toInt()
+            if (binding.etPrice.text.isNotEmpty()) num = binding.etPrice.text.toString().toLong()
             if (okClickListener != null) okClickListener?.let { it1 -> it1(num) }
         }
 
