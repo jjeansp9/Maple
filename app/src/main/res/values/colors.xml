@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bg_base">#F3F3F3</color>
     <color name="red">#FF0000</color>
+    <color name="brand_color">#C84736</color>
 
     <color name="font_color_333">#333</color>
     <color name="font_color_444">#444</color>
@@ -18,4 +19,8 @@
 
     <color name="btn_color">#238328</color>
     <color name="bg_nogada">#BA28354C</color>
+
+    <color name="line_dialog">#E3E3E3</color>
+
+    <color name="bg_dialog">#FFFFFF</color>
 </resources>
