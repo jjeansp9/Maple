@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/bg_base">
+    android:background="@color/black">
 
     <ImageView
+        android:id="@+id/img_bg"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -17,16 +18,16 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_ads"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,18 +35,57 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/base_horizontal">
 
-                <TextView
-                    android:id="@+id/tv_title"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:background="@drawable/bg_layout_nogada"
                     android:padding="12dp"
-                    android:gravity="center"
-                    android:text="노목 강화하기"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_size_24"
-                    android:textColor="@color/white"/>
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_set_music"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:gravity="start"
+                        android:text="노목 강화하기"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_24"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/tv_set_music"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@id/tv_set_theme"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_layout_box"
+                        android:backgroundTint="@color/btn_color"
+                        android:padding="8dp"
+                        android:text="음악끄기"
+                        android:textSize="@dimen/text_size_12"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/tv_set_theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_layout_box"
+                        android:backgroundTint="@color/btn_color"
+                        android:text="테마변경"
+                        android:textSize="@dimen/text_size_12"
+                        android:textColor="@color/white"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:id="@+id/layout_glove_10"
@@ -381,22 +421,6 @@
                                 android:textStyle="bold"
                                 android:text="장공 60% 강화"/>
 
-                            <TextView
-                                android:id="@+id/tv_reset"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/bg_layout_box"
-                                android:backgroundTint="@color/btn_color"
-                                android:layout_gravity="end"
-                                android:gravity="center"
-                                android:paddingHorizontal="12dp"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/text_size_14"
-                                android:textStyle="bold"
-                                android:text="초기화"
-                                android:visibility="gone"/>
-
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -515,7 +539,25 @@
                             android:textStyle="bold"
                             android:visibility="gone"/>
                     </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layout_nogada_option"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_layout_box"
+                        android:backgroundTint="@color/gray"
+                        android:layout_gravity="end"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="bold"
+                        android:text="노목 초기화"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <ScrollView
                     android:id="@+id/scroll_bottom"
                     android:layout_width="match_parent"
@@ -537,4 +579,27 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/layout_ads"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3899092616268649/7449230082"/>
+
+    </LinearLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
