@@ -15,7 +15,7 @@ object Item {
         item.physicalDef = 2
         item.upgradeCnt = 5
         item.img = R.drawable.ic_nogada_glove_item
-        item.img_main = R.drawable.ic_nogada_glove
+        item.imgMain = R.drawable.ic_nogada_glove
 
         for (i in 1 .. 5) item.equip.add(i) // 전체직업
 
@@ -33,12 +33,12 @@ object Item {
         item.reqLuk = 0
 
         item.type = "망토"
-        item.physicalDef = 5 // 물리 방어력
-        item.magicDef = 10   // 마법 방어력
-        item.avd = 10        // 회피율
-        item.upgradeCnt = 5  // 업그레이드 횟수
+        item.physicalDef = 5  // 물리 방어력
+        item.magicDef = 10    // 마법 방어력
+        item.avd = 10         // 회피율
+        item.upgradeCnt = 10  // 업그레이드 횟수
         item.img = R.drawable.humang_item
-        item.img_main = R.drawable.humang
+        item.imgMain = R.drawable.humang
 
         for (i in 1 .. 5) item.equip.add(i) // 전체직업
 

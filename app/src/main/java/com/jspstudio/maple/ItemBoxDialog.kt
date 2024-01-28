@@ -2,6 +2,7 @@ package com.jspstudio.maple
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,13 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.jspstudio.maple.databinding.DialogItemBoxBinding
 import com.jspstudio.maple.databinding.DialogNormalBinding
 
-class ItemBoxDialog : DialogFragment() {
+class ItemBoxDialog(val mContext: AppCompatActivity) : DialogFragment() {
 
     private val binding: DialogItemBoxBinding by lazy { DialogItemBoxBinding.inflate(layoutInflater) }
 
@@ -51,7 +53,7 @@ class ItemBoxDialog : DialogFragment() {
         }
     }
 
-    val mAdapter by lazy { context?.let { ItemBoxAdapter(it, itemList) } }
+    val mAdapter by lazy { mContext?.let { ItemBoxAdapter(it, itemList) } }
 
     private fun initView() {
         initData()
@@ -60,15 +62,12 @@ class ItemBoxDialog : DialogFragment() {
             mAdapter?.setItemClickListener(object : ItemBoxAdapter.OnItemClickListener{
                 override fun itemClick(item : ItemOption) {
                     if (dialog != null) {
-                        //if (okClickListener != null) okClickListener?.let { it1 -> it1(item) }
-                        showDialog()
-
+                        if (!item.name.isNullOrEmpty()) showDialog(item)
                     }
                 }
             })
         }
         binding.recycler.adapter = mAdapter
-        var index = 0
         for (i in 0 until 32) {
             mAdapter?.notifyItemChanged(i, itemList)
         }
@@ -83,28 +82,24 @@ class ItemBoxDialog : DialogFragment() {
 
     }
 
-    private var adsDialog: NormalDialog? = null
+    private var adsDialog: AdmobDialog? = null
 
-    private fun showDialog() {
+    private fun showDialog(item : ItemOption) {
         if (adsDialog == null || adsDialog?.isAdded == false) {
-            adsDialog = NormalDialog().apply {
+            adsDialog = AdmobDialog(mContext).apply {
                 setTitle("광고 시청")
-                setMsg("아이템 변경을 위해 광고를 시청하시겠습니까?")
-                setEtVisible(true)
+                setItem(item)
                 okClick {
-//                    view.text = "${getFormattedValue(it, PATTERN_NUMBER)} 메소"
-//                    when(view) {
-//                        binding.tvGlove10Price -> price10 = it
-//                        binding.tvGlove60Price -> price60 = it
-//                    }
-//                    dismiss()
+                    if (it == ResponseCode.SUCCESS) {
+                        if (okClickListener != null) okClickListener?.let { it1 -> it1(item) }
+                        dismiss()
+                    }
                 }
-                cancelClick { dismiss() }
             }
         }
         // Dialog가 이미 추가되었는지 확인하고, 추가되지 않았다면 표시
         if (!adsDialog!!.isAdded) {
-            adsDialog!!.show(this.childFragmentManager, "normalDialog")
+            adsDialog!!.show(this.parentFragmentManager, "adsDialog")
         }
     }
 }

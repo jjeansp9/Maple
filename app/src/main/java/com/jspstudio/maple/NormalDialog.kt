@@ -14,7 +14,11 @@ class NormalDialog : DialogFragment() {
 
     private var okClickListener: ((response: Long) -> Unit)? = null
     private var cancelClickListener: View.OnClickListener? = null
+    private var title = ""
+    private var msg = ""
     private var price = ""
+    private var etVisible : Boolean? = null
+    private var msgVisible : Boolean? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return binding.root
@@ -27,14 +31,22 @@ class NormalDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initData()
         onClick()
     }
 
-    fun setTitle(str: String) { binding.tvTitle.text = str }
-    fun setMsg(str: String) { binding.tvContent.text = str }
+    private fun initData() {
+        binding.tvTitle.text = title
+        binding.tvContent.text = msg
+        if (etVisible != null && etVisible!!) binding.etPrice.visibility = View.GONE
+        if (msgVisible != null && msgVisible!!) binding.tvContent.visibility = View.GONE
+    }
+
+    fun setTitle(str: String) { title = str }
+    fun setMsg(str: String) { msg = str }
     fun setPrice(str: String) { price = str }
-    fun setEtVisible(setVisible: Boolean) { if (setVisible) binding.etPrice.visibility = View.GONE }
-    fun setMsgVisible(setVisible: Boolean) { if (setVisible) binding.tvContent.visibility = View.GONE }
+    fun setEtVisible(setVisible: Boolean) { etVisible = setVisible }
+    fun setMsgVisible(setVisible: Boolean) { msgVisible = setVisible }
     fun okClick(listener: ((response: Long) -> Unit)?) {
         okClickListener = listener
     }

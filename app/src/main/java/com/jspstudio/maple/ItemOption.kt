@@ -21,6 +21,6 @@ data class ItemOption(
     var crt : Int = -1,         // 크리티컬
     var upgradeCnt : Int = -1,  // 업그레이드 횟수
     var img : Int = 0,          // 아이템 이미지
-    var img_main : Int = 0,     // 메인화면에 보여질 아이템 이미지
+    var imgMain : Int = 0,     // 메인화면에 보여질 아이템 이미지
     var equip : MutableList<Int> = mutableListOf() // 장비 착용 직업
 )

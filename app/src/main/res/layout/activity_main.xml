@@ -349,30 +349,35 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tv_req_lev"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="REQ LEV : 10"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_12"/>
                             <TextView
+                                android:id="@+id/tv_req_str"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="REQ STR : 0"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_12"/>
                             <TextView
+                                android:id="@+id/tv_req_dex"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="REQ DEX : 0"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_12"/>
                             <TextView
+                                android:id="@+id/tv_req_int"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="REQ INT : 0"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_size_12"/>
                             <TextView
+                                android:id="@+id/tv_req_luk"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="REQ LUK : 0"
@@ -498,6 +503,7 @@
                         android:layout_marginTop="6dp"
                         android:gravity="top">
                         <TextView
+                            android:id="@+id/tv_item_type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -514,6 +520,7 @@
                             android:textColor="@color/white"
                             android:visibility="gone"/>
                         <TextView
+                            android:id="@+id/tv_physical_def"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
