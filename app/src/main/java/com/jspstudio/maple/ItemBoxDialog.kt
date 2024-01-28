@@ -48,6 +48,8 @@ class ItemBoxDialog(val mContext: AppCompatActivity) : DialogFragment() {
 
         itemList.add(Item.nogadaGlove())
         itemList.add(Item.humang())
+        itemList.add(Item.blueGown())
+        itemList.add(Item.redGown())
         for (i in 0 until 30) {
             itemList.add(ItemOption())
         }

@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
     private val PERCENT_60 = 60
 
     private var power = 0
+    private var dex = 0
+    private var acc = 0
+    private var speed = 0
     private var maxUpCnt = 5
 
     private var buyTotal = 0L
@@ -74,11 +77,13 @@ class MainActivity : AppCompatActivity() {
 
     private var currentPosition = 0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         MobileAds.initialize(this) { Util.loadAds(this) }
+
+        items = Item.nogadaGlove()
+
         onClick()
         setMusic = UtilPref.getDataBoolean(this, UtilPref.SET_MUSIC)
         currentPosition = UtilPref.getDataInt(this, UtilPref.SET_THEME)
@@ -187,11 +192,30 @@ class MainActivity : AppCompatActivity() {
         binding.tvResult.visibility = View.GONE
         binding.tvPower.visibility = View.GONE
 
+        if (items.avd != -1) {
+            binding.tvAvd.text = "회피율 : +${items.avd}"
+            binding.tvAvd.visibility = View.VISIBLE
+        } else {
+            binding.tvAvd.visibility = View.GONE
+        }
+        if (items.physicalDef == -1) binding.tvPhysicalDef.visibility = View.GONE
+        if (items.magicDef == -1) binding.tvMagicDef.visibility = View.GONE
+        if (items.speed == -1) binding.tvSpeed.visibility = View.GONE
+        if (items.acc == -1) binding.tvAcc.visibility = View.GONE
+        binding.tvDex.visibility = View.GONE
+
         if (items.upgradeCnt != -1) maxUpCnt = items.upgradeCnt
         else maxUpCnt = 5
         power = 0
-
+        dex = 0
+        acc = 0
+        speed = 0
         gloveStack = 0
+
+        if (items.book_10!!.isNotEmpty()) binding.tvGlove10.text = items.book_10
+        else binding.tvGlove10.text = "장공 주문서 10% (공+3)"
+        if (items.book_60!!.isNotEmpty()) binding.tvGlove60.text = items.book_60
+        else binding.tvGlove60.text = "장공 주문서 60% (공+2)"
 
         if (items.name!!.isNotEmpty()) binding.tvNogadaName.text = items.name
         else binding.tvNogadaName.text = "노가다 목장갑"
@@ -224,11 +248,10 @@ class MainActivity : AppCompatActivity() {
     // 강화
     private fun upgrade(percentage: Int) {
         adsStack++
-
         when(percentage) {
             PERCENT_10 -> {
                 if (price10 == 0L) {
-                    CustomToast(this, "장공 10% 주문서 금액을 설정해주세요")
+                    CustomToast(this, "10% 주문서 금액을 설정해주세요")
                     return
                 } else {
                     buyTotal += price10
@@ -236,7 +259,7 @@ class MainActivity : AppCompatActivity() {
             }
             PERCENT_60 -> {
                 if (price60 == 0L) {
-                    CustomToast(this, "장공 60% 주문서 금액을 설정해주세요")
+                    CustomToast(this, "60% 주문서 금액을 설정해주세요")
                     return
                 } else {
                     buyTotal += price60
@@ -249,10 +272,8 @@ class MainActivity : AppCompatActivity() {
         success = random.nextInt(100) < percentage
 
         if (success) {
-            power += if (percentage == PERCENT_10) 3 else 2
-            val result = "공격력 : +$power"
-            binding.tvPower.text = result
-            if (binding.tvPower.visibility == View.GONE) binding.tvPower.visibility = View.VISIBLE
+
+            setOption(percentage)
 
             binding.tvResult.text = "강화 성공~!"
             binding.tvResult.setTextColor(ContextCompat.getColor(this, R.color.font_color_success))
@@ -325,10 +346,14 @@ class MainActivity : AppCompatActivity() {
     private var mInterstitialAd: InterstitialAd? = null
 
     private fun setupInterstitialAd() {
+
+        val test_id = getString(R.string.ads_interstitial_test_id)
+        val ads_id = getString(R.string.ads_interstitial_id)
+
         val adRequest = AdRequest.Builder().build()
 
         InterstitialAd.load(this,
-            "ca-app-pub-3899092616268649/6202800866",
+            ads_id,
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
@@ -383,19 +408,82 @@ class MainActivity : AppCompatActivity() {
         binding.tvItemType.text = "장비분류 : ${item.type}"
         if (item.physicalAtt != -1) binding.tvPower.text = "공격력 : +${item.physicalAtt}"
         else binding.tvPower.visibility = View.GONE
-        binding.tvPhysicalDef.text = "물리방어력 : +${item.physicalDef}"
+
+        if (item.physicalDef != -1) {
+            binding.tvPhysicalDef.text = "물리방어력 : +${item.physicalDef}"
+            binding.tvPhysicalDef.visibility = View.VISIBLE
+        } else {
+            binding.tvPhysicalDef.visibility = View.GONE
+        }
+
+        if (item.magicDef != -1) {
+            binding.tvMagicDef.text = "마법방어력 : +${item.magicDef}"
+            binding.tvMagicDef.visibility = View.VISIBLE
+        } else {
+            binding.tvMagicDef.visibility = View.GONE
+        }
+
+        if (item.avd != -1) {
+            binding.tvAvd.text = "회피율 : +${item.avd}"
+            binding.tvAvd.visibility = View.VISIBLE
+        } else {
+            binding.tvAvd.visibility = View.GONE
+        }
+        binding.tvDex.visibility = View.GONE
         binding.tvUpgradeCount.text = "업그레이드 가능 횟수 : ${item.upgradeCnt}"
+
+        if (item.book_10!!.isNotEmpty()) binding.tvGlove10.text = item.book_10
+        else binding.tvGlove10.text = "장공 주문서 10% (공+3)"
+        if (item.book_60!!.isNotEmpty()) binding.tvGlove60.text = item.book_60
+        else binding.tvGlove60.text = "장공 주문서 60% (공+2)"
+
+        if (items.physicalDef == -1) binding.tvPhysicalDef.visibility = View.GONE
+        if (items.magicDef == -1) binding.tvMagicDef.visibility = View.GONE
+        if (items.speed == -1) binding.tvSpeed.visibility = View.GONE
+        if (items.acc == -1) binding.tvAcc.visibility = View.GONE
+        binding.tvDex.visibility = View.GONE
 
         maxUpCnt = item.upgradeCnt
         gloveStack = 0
         power = 0
+        dex = 0
+        acc = 0
+        speed = 0
 
         Glide.with(this).load(item.imgMain).into(binding.imgNogada)
 
         binding.tvResult.visibility = View.GONE
         binding.tvPower.visibility = View.GONE
-
         items = item
+    }
+
+    private fun setOption(percentage: Int) {
+        if (items.att_10 != -1 && items.att_60 != -1) {
+            power += if (percentage == PERCENT_10) items.att_10 else items.att_60
+            val result = "공격력 : +$power"
+            binding.tvPower.text = result
+            if (binding.tvPower.visibility == View.GONE) binding.tvPower.visibility = View.VISIBLE
+        }
+        if (items.dex_10 != -1 && items.dex_60 != -1) {
+            dex += if (percentage == PERCENT_10) items.dex_10 else items.dex_60
+            val result = "DEX : +$dex"
+            binding.tvDex.text = result
+            if (binding.tvDex.visibility == View.GONE) binding.tvDex.visibility = View.VISIBLE
+        }
+        if (items.acc_10 != -1 && items.acc_60 != -1) {
+            acc += if (percentage == PERCENT_10) items.acc_10 else items.acc_60
+            val result = "명중률 : +$acc"
+            binding.tvAcc.text = result
+            if (binding.tvAcc.visibility == View.GONE) binding.tvAcc.visibility = View.VISIBLE
+        }
+        if (items.speed_10 != -1) {
+            if (percentage == PERCENT_10) {
+                speed +=  items.speed_10
+                val result = "이동속도 : +$speed"
+                binding.tvSpeed.text = result
+                if (binding.tvSpeed.visibility == View.GONE) binding.tvSpeed.visibility = View.VISIBLE
+            }
+        }
     }
 
     fun getFormattedValue(data: Long, pattern: String): String { return DecimalFormat(pattern).format(data) } // 숫자 형식

@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">노목 강화</string>
 
+    <string name="ads_banner_id">ca-app-pub-3899092616268649/7449230082</string>
+    <string name="ads_interstitial_id">ca-app-pub-3899092616268649/6202800866</string>
+    <string name="ads_reward_id">ca-app-pub-3899092616268649/6220280024</string>
+
+    <string name="ads_banner_test_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ads_interstitial_test_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="ads_reward_test_id">ca-app-pub-3940256099942544/5224354917</string>
+
     <string name="complete">완료</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>

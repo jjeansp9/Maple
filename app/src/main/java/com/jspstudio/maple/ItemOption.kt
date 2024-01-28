@@ -21,6 +21,16 @@ data class ItemOption(
     var crt : Int = -1,         // 크리티컬
     var upgradeCnt : Int = -1,  // 업그레이드 횟수
     var img : Int = 0,          // 아이템 이미지
-    var imgMain : Int = 0,     // 메인화면에 보여질 아이템 이미지
+    var imgMain : Int = 0,      // 메인화면에 보여질 아이템 이미지
+    var book_10 : String? = "", // 10% 주문서
+    var book_60 : String? = "", // 60% 주문서
+    var att_10 : Int = -1,      // 공격력
+    var att_60 : Int = -1,
+    var dex_10 : Int = -1,      // 민첩
+    var dex_60 : Int = -1,
+    var acc_10 : Int = -1,      // 명중률
+    var acc_60 : Int = -1,
+    var speed_10 : Int = -1,    // 이속
+    var speed_60 : Int = -1,
     var equip : MutableList<Int> = mutableListOf() // 장비 착용 직업
 )

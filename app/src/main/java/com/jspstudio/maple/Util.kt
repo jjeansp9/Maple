@@ -12,13 +12,16 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
 object Util {
-    private val test_id = "ca-app-pub-3940256099942544/5224354917" // test 광고단위 id
-    //private val ads_id = "ca-app-pub-3899092616268649/1603224656" // 광고단위 id. 테스트할때는 사용 절대금지 [광고 정지사유]
+
     private var mRewardedAd: RewardedAd? = null
 
     fun loadAds(context: Context) {
+
+        val test_id = context.getString(R.string.ads_reward_test_id) // test 광고단위 id
+        val ads_id = context.getString(R.string.ads_reward_id) // 광고단위 id. 테스트할때는 사용 절대금지 [광고 정지사유]
+
         val adRequest: AdRequest = AdRequest.Builder().build()
-        RewardedAd.load(context, test_id,
+        RewardedAd.load(context, ads_id,
             adRequest, object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(@NonNull loadAdError: LoadAdError) {
                     super.onAdFailedToLoad(loadAdError)
