@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkUpgrade(percentage: Int) {
         if (maxUpCnt <= 0) return
-        if (adsStack >= 20) {
+        if (adsStack >= 40) {
             showAds = random.nextInt(100) < 3
             if (showAds) {
                 adsStack = 0
