@@ -123,9 +123,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:gravity="center"
-                                android:text="장공 주문서 10%"
+                                android:text="장공 주문서 10% (공 +3)"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/text_size_18" />
+                                android:textSize="@dimen/text_size_16" />
                             <TextView
                                 android:id="@+id/tv_glove_10_price"
                                 android:layout_width="wrap_content"
@@ -193,9 +193,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
                                 android:gravity="center"
-                                android:text="장공 주문서 60%"
+                                android:text="장공 주문서 60% (공 +2)"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/text_size_18" />
+                                android:textSize="@dimen/text_size_16" />
                             <TextView
                                 android:id="@+id/tv_glove_60_price"
                                 android:layout_width="wrap_content"
@@ -539,23 +539,48 @@
                             android:textStyle="bold"
                             android:visibility="gone"/>
                     </LinearLayout>
-                    <TextView
-                        android:id="@+id/tv_reset"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/layout_nogada_option"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/bg_layout_box"
-                        android:backgroundTint="@color/gray"
-                        android:layout_gravity="end"
-                        android:gravity="center"
-                        android:padding="12dp"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_14"
-                        android:textStyle="bold"
-                        android:text="노목 초기화"/>
+                        android:layout_marginTop="12dp">
+
+                        <TextView
+                            android:id="@+id/tv_change_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_nogada_option"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_layout_box"
+                            android:backgroundTint="@color/btn_color"
+                            android:layout_gravity="end"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14"
+                            android:textStyle="bold"
+                            android:text="아이템 변경"/>
+
+                        <TextView
+                            android:id="@+id/tv_reset"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_nogada_option"
+                            android:background="@drawable/bg_layout_box"
+                            android:backgroundTint="@color/gray"
+                            android:layout_gravity="end"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14"
+                            android:textStyle="bold"
+                            android:text="강화 초기화"/>
+
+                    </LinearLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ScrollView
@@ -599,7 +624,5 @@
             ads:adUnitId="ca-app-pub-3899092616268649/7449230082"/>
 
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

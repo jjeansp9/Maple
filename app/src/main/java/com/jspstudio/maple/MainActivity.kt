@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private var dialog: NormalDialog? = null
+    private var itemDialog: ItemBoxDialog? = null
 
     private lateinit var mediaPlayer: MediaPlayer
 
@@ -153,12 +154,32 @@ class MainActivity : AppCompatActivity() {
         binding.tvSetGlove60.setOnClickListener { showDialog(binding.tvGlove60Price) }
         binding.tvUpgrade10.setOnClickListener { checkUpgrade(10) } // 10퍼 강화
         binding.tvUpgrade60.setOnClickListener { checkUpgrade(60) } // 60퍼 강화
-        binding.tvReset.setOnClickListener { reset()
-        } // 초기화
+        binding.tvReset.setOnClickListener { reset() } // 강화 초기화
         binding.tvBuyTotalReset.setOnClickListener {
             buyTotal = 0L
             binding.buyTotal.text = "${getFormattedValue(buyTotal, PATTERN_NUMBER)} 메소"
         } // 총 사용금액 초기화
+        binding.tvChangeItem.setOnClickListener { showItemBoxDialog() }
+    }
+
+    private fun showItemBoxDialog() {
+        if (itemDialog == null || itemDialog?.isAdded == false) {
+            itemDialog = ItemBoxDialog().apply {
+                setTitle("강화할 아이템을 선택해주세요")
+//                okClick {
+//                    view.text = "${getFormattedValue(it, PATTERN_NUMBER)} 메소"
+//                    when(view) {
+//                        binding.tvGlove10Price -> price10 = it
+//                        binding.tvGlove60Price -> price60 = it
+//                    }
+//                    dismiss()
+//                }
+            }
+        }
+        // Dialog가 이미 추가되었는지 확인하고, 추가되지 않았다면 표시
+        if (!itemDialog!!.isAdded) {
+            itemDialog!!.show(this.supportFragmentManager, "itemBoxDialog")
+        }
     }
 
     private fun showDialog(view: TextView) {
