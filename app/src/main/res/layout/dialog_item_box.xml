@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/bg_dialog"
     android:layout_gravity="center"
@@ -18,19 +19,14 @@
         android:textStyle="bold"
         android:textColor="@color/black" />
 
-    <ScrollView
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="wrap_content"
         android:layout_height="400dp"
-        android:layout_marginTop="20dp">
-        <GridLayout
-            android:id="@+id/layout_item_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:layout_gravity="center_horizontal"
-            android:columnCount="4"
-            android:rowCount="8"/>
-    </ScrollView>
-
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="4"
+        tools:listitem="@layout/list_item_box"/>
 
 </LinearLayout>

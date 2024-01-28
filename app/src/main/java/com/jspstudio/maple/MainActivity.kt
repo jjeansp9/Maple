@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -166,14 +167,10 @@ class MainActivity : AppCompatActivity() {
         if (itemDialog == null || itemDialog?.isAdded == false) {
             itemDialog = ItemBoxDialog().apply {
                 setTitle("강화할 아이템을 선택해주세요")
-//                okClick {
-//                    view.text = "${getFormattedValue(it, PATTERN_NUMBER)} 메소"
-//                    when(view) {
-//                        binding.tvGlove10Price -> price10 = it
-//                        binding.tvGlove60Price -> price60 = it
-//                    }
-//                    dismiss()
-//                }
+                okClick {
+                    Toast.makeText(this@MainActivity, it.name, Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
             }
         }
         // Dialog가 이미 추가되었는지 확인하고, 추가되지 않았다면 표시
@@ -186,6 +183,7 @@ class MainActivity : AppCompatActivity() {
         if (dialog == null || dialog?.isAdded == false) {
             dialog = NormalDialog().apply {
                 setTitle("주문서의 금액을 설정해주세요")
+                setMsgVisible(true)
                 okClick {
                     view.text = "${getFormattedValue(it, PATTERN_NUMBER)} 메소"
                     when(view) {

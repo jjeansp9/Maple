@@ -14,7 +14,6 @@ class NormalDialog : DialogFragment() {
 
     private var okClickListener: ((response: Long) -> Unit)? = null
     private var cancelClickListener: View.OnClickListener? = null
-    private var title = ""
     private var price = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -29,15 +28,13 @@ class NormalDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onClick()
-        initData()
     }
 
-    private fun initData() {
-        binding.tvTitle.text = title
-    }
-
-    fun setTitle(str: String) { title = str }
+    fun setTitle(str: String) { binding.tvTitle.text = str }
+    fun setMsg(str: String) { binding.tvContent.text = str }
     fun setPrice(str: String) { price = str }
+    fun setEtVisible(setVisible: Boolean) { if (setVisible) binding.etPrice.visibility = View.GONE }
+    fun setMsgVisible(setVisible: Boolean) { if (setVisible) binding.tvContent.visibility = View.GONE }
     fun okClick(listener: ((response: Long) -> Unit)?) {
         okClickListener = listener
     }
