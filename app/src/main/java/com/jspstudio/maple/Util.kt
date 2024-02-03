@@ -21,7 +21,7 @@ object Util {
         val ads_id = context.getString(R.string.ads_reward_id) // 광고단위 id. 테스트할때는 사용 절대금지 [광고 정지사유]
 
         val adRequest: AdRequest = AdRequest.Builder().build()
-        RewardedAd.load(context, ads_id,
+        RewardedAd.load(context, test_id,
             adRequest, object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(@NonNull loadAdError: LoadAdError) {
                     super.onAdFailedToLoad(loadAdError)

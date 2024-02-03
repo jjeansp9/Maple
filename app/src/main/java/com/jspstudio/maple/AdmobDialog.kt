@@ -20,6 +20,7 @@ class AdmobDialog(val mContext: AppCompatActivity) : DialogFragment() {
     private var okClickListener: ((response: Int) -> Unit)? = null
     private var cancelClickListener: View.OnClickListener? = null
     private var title = ""
+    private var btnStr = "변경하기"
     private var msg = ""
     private var price = ""
     private var item = ItemOption()
@@ -41,13 +42,16 @@ class AdmobDialog(val mContext: AppCompatActivity) : DialogFragment() {
 
     private fun initData() {
         binding.tvTitle.text = title
+        binding.tvShow.text = btnStr
         if (item != null) {
-            Glide.with(requireContext()).load(item.img).into(binding.imgItem)
+            if (item.img != 0) Glide.with(requireContext()).load(item.img).into(binding.imgItem)
+            else binding.imgItem.visibility = View.GONE
             binding.tvItemName.text = item.name
         }
     }
 
     fun setTitle(str: String) { title = str }
+    fun setBtnStr(str: String) { btnStr = str }
     fun setItem(item: ItemOption) { this.item = item }
     fun okClick(listener: ((response: Int) -> Unit)?) {
         okClickListener = listener

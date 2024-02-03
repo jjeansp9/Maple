@@ -54,6 +54,9 @@ class MainActivity : AppCompatActivity() {
     private var setMusic = true
     private var showAds = false
 
+    private var adsStack = 30
+    val random = Random()
+
     private val musicList = arrayListOf(
         R.raw.leith,
         R.raw.henesys,
@@ -82,11 +85,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         MobileAds.initialize(this) { Util.loadAds(this) }
 
-        items = Item.nogadaGlove()
-
+        initData()
         onClick()
-        setMusic = UtilPref.getDataBoolean(this, UtilPref.SET_MUSIC)
-        currentPosition = UtilPref.getDataInt(this, UtilPref.SET_THEME)
 
         Glide.with(this).load(bgList[currentPosition]).into(binding.imgBg)
         mediaPlayer = MediaPlayer.create(this, musicList[currentPosition])
@@ -101,7 +101,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         setAds()
-        setupInterstitialAd()
+    }
+
+    private fun initData() {
+        items = Item.nogadaGlove()
+        setMusic = UtilPref.getDataBoolean(this, UtilPref.SET_MUSIC)
+        currentPosition = UtilPref.getDataInt(this, UtilPref.SET_THEME)
+        showAds = UtilPref.getDataBoolean(this, UtilPref.SET_ADS)
+        if (showAds) {
+            binding.imgUpgrade10.visibility = View.VISIBLE
+            binding.imgUpgrade60.visibility = View.VISIBLE
+        }
     }
 
     private fun setAds() {
@@ -139,8 +149,8 @@ class MainActivity : AppCompatActivity() {
         binding.tvSetMusic.setOnClickListener { setMusic() }
         binding.tvSetGlove10.setOnClickListener { showDialog(binding.tvGlove10Price) }
         binding.tvSetGlove60.setOnClickListener { showDialog(binding.tvGlove60Price) }
-        binding.tvUpgrade10.setOnClickListener { checkUpgrade(10) } // 10퍼 강화
-        binding.tvUpgrade60.setOnClickListener { checkUpgrade(60) } // 60퍼 강화
+        binding.layoutUpgrade10.setOnClickListener { checkUpgrade(10) } // 10퍼 강화
+        binding.layoutUpgrade60.setOnClickListener { checkUpgrade(60) } // 60퍼 강화
         binding.tvReset.setOnClickListener { reset() } // 강화 초기화
         binding.tvBuyTotalReset.setOnClickListener {
             buyTotal = 0L
@@ -225,29 +235,69 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkUpgrade(percentage: Int) {
-        if (maxUpCnt <= 0) return
-        if (adsStack >= 40) {
-            showAds = random.nextInt(100) < 3
-            if (showAds) {
-                adsStack = 0
-                showAds = false
-                showAds()
-                upgrade(percentage)
+        if (maxUpCnt <= 0) {
+            CustomToast(this, "강화가 완료된 상태입니다. 강화 초기화 후 진행하세요.")
+            return
+        }
+        if (!showAds) {
+            if (adsStack <= 0) {
+                showAds = random.nextInt(100) < 3
+
+                //showAds = false
+                //showAds()
+                if (showAds) {
+                    UtilPref.setDataBoolean(this, UtilPref.SET_ADS, true)
+                    binding.imgUpgrade10.visibility = View.VISIBLE
+                    binding.imgUpgrade60.visibility = View.VISIBLE
+                    upgrade(percentage)
+                } else {
+                    upgrade(percentage)
+                }
 
             } else {
                 upgrade(percentage)
             }
         } else {
-            upgrade(percentage)
+            showAds(percentage)
         }
     }
 
-    private var adsStack = 0
-    val random = Random()
+    private var adsDialog: AdmobDialog? = null
+
+    private fun showAds(percentage : Int) {
+
+        val item = ItemOption()
+        item.img = 0
+        item.name = "광고를 시청해야 다시 여러번 강화를 할 수 있습니다."
+
+        if (adsDialog == null || adsDialog?.isAdded == false) {
+            adsDialog = AdmobDialog(this).apply {
+                setTitle("광고 시청")
+                setItem(item)
+                setBtnStr("시청하기")
+                okClick {
+                    if (it == ResponseCode.SUCCESS) {
+                        Util.showAds(this@MainActivity) {
+                            adsStack = 30
+                            showAds = false
+                            UtilPref.setDataBoolean(this@MainActivity, UtilPref.SET_ADS, false)
+                            binding.imgUpgrade10.visibility = View.GONE
+                            binding.imgUpgrade60.visibility = View.GONE
+                            upgrade(percentage)
+                        }
+                        dismiss()
+                    }
+                }
+            }
+        }
+        // Dialog가 이미 추가되었는지 확인하고, 추가되지 않았다면 표시
+        if (!adsDialog!!.isAdded) {
+            adsDialog!!.show(this.supportFragmentManager, "adsDialog")
+        }
+    }
 
     // 강화
     private fun upgrade(percentage: Int) {
-        adsStack++
         when(percentage) {
             PERCENT_10 -> {
                 if (price10 == 0L) {
@@ -267,8 +317,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        adsStack--
         maxUpCnt -= 1
-
         success = random.nextInt(100) < percentage
 
         if (success) {

@@ -7,6 +7,7 @@ object UtilPref {
     private const val PREFERENCE_NAME = "com.jspstudio.maple.util.preferences"
     const val SET_MUSIC = "setMusic"
     const val SET_THEME = "setTheme"
+    const val SET_ADS = "setAds"
 
     private fun pref(context: Context) : SharedPreferences { return context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE) }
 
