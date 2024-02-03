@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
 
     private var currentPosition = 0
 
+    // TODO : 업데이트를 위한 버전체크 및 인앱업데이트, 평점 리뷰 권유 등 구현하기
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
