@@ -8,6 +8,8 @@ object UtilPref {
     const val SET_MUSIC = "setMusic"
     const val SET_THEME = "setTheme"
     const val SET_ADS = "setAds"
+    const val IS_NEWBIE = "isNewbie"
+    const val MY_COIN = "myCoin"
 
     private fun pref(context: Context) : SharedPreferences { return context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE) }
 
@@ -22,7 +24,4 @@ object UtilPref {
 
     fun getDataBoolean(context: Context, key: String): Boolean { return pref(context).getBoolean(key, true) }
     fun setDataBoolean(context: Context, key: String, value: Boolean) { pref(context).edit().putBoolean(key, value).apply() }
-
-    fun getNewMember(context: Context, key: String): Boolean { return pref(context).getBoolean(key, true) }
-    fun setNewMember(context: Context, key: String, value: Boolean) { pref(context).edit().putBoolean(key, value).apply() }
 }

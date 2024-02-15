@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     private var setMusic = true
     private var showAds = false
 
-    private var adsStack = 30
+    private var myCoinCnt = 0
     val random = Random()
 
     private val musicList = arrayListOf(
@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
     )
 
     private var currentPosition = 0
-
     // TODO : 업데이트를 위한 버전체크 및 인앱업데이트, 평점 리뷰 권유 등 구현하기
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,15 +103,25 @@ class MainActivity : AppCompatActivity() {
         setAds()
     }
 
+    private var isNewbie = true
+
     private fun initData() {
         items = Item.nogadaGlove()
         setMusic = UtilPref.getDataBoolean(this, UtilPref.SET_MUSIC)
         currentPosition = UtilPref.getDataInt(this, UtilPref.SET_THEME)
-        showAds = UtilPref.getDataBoolean(this, UtilPref.SET_ADS)
-        if (showAds) {
-            binding.imgUpgrade10.visibility = View.VISIBLE
-            binding.imgUpgrade60.visibility = View.VISIBLE
+//        showAds = UtilPref.getDataBoolean(this, UtilPref.SET_ADS)
+//        if (showAds) {
+//            binding.imgUpgrade10.visibility = View.VISIBLE
+//            binding.imgUpgrade60.visibility = View.VISIBLE
+//        }
+        isNewbie = UtilPref.getDataBoolean(this, UtilPref.IS_NEWBIE)
+        if (isNewbie) {
+            myCoinCnt += 50
+            UtilPref.setDataBoolean(this, UtilPref.IS_NEWBIE, false)
+            UtilPref.setDataInt(this, UtilPref.MY_COIN, myCoinCnt)
         }
+        myCoinCnt = UtilPref.getDataInt(this, UtilPref.MY_COIN)
+        binding.tvCoinCnt.text = myCoinCnt.toString()
     }
 
     private fun setAds() {
@@ -152,7 +161,8 @@ class MainActivity : AppCompatActivity() {
         binding.tvSetGlove60.setOnClickListener { showDialog(binding.tvGlove60Price) }
         binding.layoutUpgrade10.setOnClickListener { checkUpgrade(10) } // 10퍼 강화
         binding.layoutUpgrade60.setOnClickListener { checkUpgrade(60) } // 60퍼 강화
-        binding.tvReset.setOnClickListener { reset() } // 강화 초기화
+        binding.tvReset.setOnClickListener { reset() }            // 강화 초기화
+        binding.layoutCoinCharge.setOnClickListener { showAds() } // 포인트 충전
         binding.tvBuyTotalReset.setOnClickListener {
             buyTotal = 0L
             binding.buyTotal.text = "${getFormattedValue(buyTotal, PATTERN_NUMBER)} 메소"
@@ -240,36 +250,20 @@ class MainActivity : AppCompatActivity() {
             CustomToast(this, "강화가 완료된 상태입니다. 강화 초기화 후 진행하세요.")
             return
         }
-        if (!showAds) {
-            if (adsStack <= 0) {
-                showAds = random.nextInt(100) < 3
-
-                //showAds = false
-                //showAds()
-                if (showAds) {
-                    UtilPref.setDataBoolean(this, UtilPref.SET_ADS, true)
-                    binding.imgUpgrade10.visibility = View.VISIBLE
-                    binding.imgUpgrade60.visibility = View.VISIBLE
-                    upgrade(percentage)
-                } else {
-                    upgrade(percentage)
-                }
-
-            } else {
-                upgrade(percentage)
-            }
+        if (myCoinCnt <= 0) {
+            CustomToast(this, "포인트가 부족합니다. 무료 충전 후 이용해주세요.")
         } else {
-            showAds(percentage)
+            upgrade(percentage)
         }
     }
 
     private var adsDialog: AdmobDialog? = null
 
-    private fun showAds(percentage : Int) {
+    private fun showAds() {
 
         val item = ItemOption()
         item.img = 0
-        item.name = "광고를 시청해야 다시 여러번 강화를 할 수 있습니다."
+        item.name = "50코인 무료충전"
 
         if (adsDialog == null || adsDialog?.isAdded == false) {
             adsDialog = AdmobDialog(this).apply {
@@ -279,12 +273,11 @@ class MainActivity : AppCompatActivity() {
                 okClick {
                     if (it == ResponseCode.SUCCESS) {
                         Util.showAds(this@MainActivity) {
-                            adsStack = 30
-                            showAds = false
-                            UtilPref.setDataBoolean(this@MainActivity, UtilPref.SET_ADS, false)
-                            binding.imgUpgrade10.visibility = View.GONE
-                            binding.imgUpgrade60.visibility = View.GONE
-                            upgrade(percentage)
+                            myCoinCnt += 50
+                            UtilPref.setDataInt(this@MainActivity, UtilPref.MY_COIN, myCoinCnt)
+                            binding.tvCoinCnt.text = myCoinCnt.toString()
+//                            binding.imgUpgrade10.visibility = View.GONE
+//                            binding.imgUpgrade60.visibility = View.GONE
                         }
                         dismiss()
                     }
@@ -318,7 +311,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        adsStack--
+        myCoinCnt--
+        UtilPref.setDataInt(this@MainActivity, UtilPref.MY_COIN, myCoinCnt)
         maxUpCnt -= 1
         success = random.nextInt(100) < percentage
 
@@ -343,6 +337,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.buyTotal.text = "${getFormattedValue(buyTotal, PATTERN_NUMBER)} 메소"
         binding.tvUpgradeCount.text = "업그레이드 가능 횟수 : $maxUpCnt"
+
+        binding.tvCoinCnt.text = myCoinCnt.toString()
 
         if (binding.tvResult.visibility == View.GONE) binding.tvResult.visibility = View.VISIBLE
         if (binding.scrollBottom.visibility == View.INVISIBLE) binding.scrollBottom.visibility = View.VISIBLE
@@ -417,31 +413,31 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    private fun showAds() {
-        if (mInterstitialAd != null) {
-            mInterstitialAd?.show(this@MainActivity)
-            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                override fun onAdClicked() {
-                }
-
-                override fun onAdDismissedFullScreenContent() {
-                    // Called when ad is dismissed.
-                    mInterstitialAd = null
-                    setupInterstitialAd()
-                }
-
-                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                    mInterstitialAd = null
-                }
-
-                override fun onAdImpression() {
-                }
-
-                override fun onAdShowedFullScreenContent() {
-                }
-            }
-        }
-    }
+//    private fun showAds() {
+//        if (mInterstitialAd != null) {
+//            mInterstitialAd?.show(this@MainActivity)
+//            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+//                override fun onAdClicked() {
+//                }
+//
+//                override fun onAdDismissedFullScreenContent() {
+//                    // Called when ad is dismissed.
+//                    mInterstitialAd = null
+//                    setupInterstitialAd()
+//                }
+//
+//                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+//                    mInterstitialAd = null
+//                }
+//
+//                override fun onAdImpression() {
+//                }
+//
+//                override fun onAdShowedFullScreenContent() {
+//                }
+//            }
+//        }
+//    }
 
     var items = ItemOption()
 

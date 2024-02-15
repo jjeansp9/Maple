@@ -321,13 +321,44 @@
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         android:textSize="@dimen/text_size_18"/>
+
+                    <LinearLayout
+                        android:id="@+id/layout_coin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:gravity="end"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_nogada_name">
+
+                        <TextView
+                            android:id="@+id/tv_coin_cnt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="end|center_vertical"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/text_size_16"/>
+
+                        <ImageView
+                            android:id="@+id/img_coin"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/coin"/>
+
+                    </LinearLayout>
+
                     <ImageView
                         android:id="@+id/img_nogada"
                         android:layout_width="90dp"
                         android:layout_height="90dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_nogada_name"
-                        android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/layout_coin"
+                        android:layout_marginTop="8dp"
                         android:src="@drawable/ic_nogada_glove"/>
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_req"
@@ -632,6 +663,38 @@
                         app:layout_constraintTop_toBottomOf="@id/layout_nogada_option"
                         android:layout_marginTop="20dp">
 
+                        <LinearLayout
+                            android:id="@+id/layout_coin_charge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_nogada_option"
+                            android:layout_marginEnd="8dp"
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_layout_box"
+                            android:backgroundTint="@color/btn_glove_10"
+                            android:padding="12dp"
+                            android:layout_marginBottom="8dp">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/ic_ad"
+                                android:layout_marginEnd="2dp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="end|center_vertical"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_12"
+                                android:textStyle="bold"
+                                android:text="코인 충전"/>
+
+                        </LinearLayout>
+
                         <TextView
                             android:id="@+id/tv_change_item"
                             android:layout_width="wrap_content"
@@ -645,7 +708,7 @@
                             android:gravity="center"
                             android:padding="12dp"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_14"
+                            android:textSize="@dimen/text_size_12"
                             android:textStyle="bold"
                             android:text="아이템 변경" />
 
@@ -661,7 +724,7 @@
                             android:gravity="center"
                             android:padding="12dp"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_14"
+                            android:textSize="@dimen/text_size_12"
                             android:textStyle="bold"
                             android:text="강화 초기화"/>
 
